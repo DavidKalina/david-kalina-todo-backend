@@ -7,6 +7,10 @@ export interface Task {
   updatedAt: Date;
 }
 
+export interface GetTaskDTO {
+  id: string;
+}
+
 export interface CreateTaskDTO {
   title: string;
   color: string;
