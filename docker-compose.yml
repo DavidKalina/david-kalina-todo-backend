@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  api:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=mysql://user:password@db:3306/todo_db
+      - PORT=3001
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/dist
+
+  db:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=todo_db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    volumes:
+      - todo_db_data:/var/lib/mysql
+
+volumes:
+  todo_db_data:
