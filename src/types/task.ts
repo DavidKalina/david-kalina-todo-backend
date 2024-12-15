@@ -12,6 +12,12 @@ export interface CreateTaskDTO {
   color: string;
 }
 
+export interface UpdateTaskDTO {
+  title?: string;
+  color?: string;
+  completed?: boolean;
+}
+
 export interface TaskFilters {
   completed?: boolean;
   color?: string;

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { CreateTaskDTO, PaginationParams, TaskFilters } from "../types/task";
+import { CreateTaskDTO, PaginationParams, TaskFilters, UpdateTaskDTO } from "../types/task";
 
 const prisma = new PrismaClient();
 
@@ -102,5 +102,44 @@ export const listTasks = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error listing tasks:", error);
     res.status(500).json({ error: "Failed to retrieve tasks" });
+  }
+};
+
+export const updateTask = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const updateData: UpdateTaskDTO = req.body;
+
+    // Check if task exists
+    const existingTask = await prisma.task.findUnique({
+      where: { id },
+    });
+
+    if (!existingTask) {
+      res.status(404).json({
+        error: {
+          message: "Task not found",
+          code: "TASK_NOT_FOUND",
+          status: 404,
+        },
+      });
+    }
+
+    // Update the task
+    const updatedTask = await prisma.task.update({
+      where: { id },
+      data: updateData,
+    });
+
+    res.status(200).json(updatedTask);
+  } catch (error) {
+    console.error("Error updating task:", error);
+    res.status(500).json({
+      error: {
+        message: "Failed to update task",
+        code: "SERVER_ERROR",
+        status: 500,
+      },
+    });
   }
 };
