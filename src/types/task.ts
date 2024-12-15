@@ -11,3 +11,14 @@ export interface CreateTaskDTO {
   title: string;
   color: string;
 }
+
+export interface TaskFilters {
+  completed?: boolean;
+  color?: string;
+  search?: string;
+}
+
+export interface PaginationParams {
+  page?: number;
+  limit?: number;
+}
