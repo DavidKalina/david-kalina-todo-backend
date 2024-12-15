@@ -53,3 +53,23 @@ export const validateUpdateTask = (req: Request, res: Response, next: NextFuncti
 
   next();
 };
+
+export const validateTaskId = (req: Request, res: Response, next: NextFunction): void => {
+  const { id } = req.params;
+
+  // Check if id is provided and is a valid UUID
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  if (!id || !uuidRegex.test(id)) {
+    res.status(400).json({
+      error: {
+        message: "Invalid task ID format",
+        code: "INVALID_INPUT",
+        status: 400,
+      },
+    });
+    return;
+  }
+
+  next();
+};

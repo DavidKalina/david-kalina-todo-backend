@@ -143,3 +143,41 @@ export const updateTask = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const deleteTask = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    // Check if task exists
+    const existingTask = await prisma.task.findUnique({
+      where: { id },
+    });
+
+    if (!existingTask) {
+      res.status(404).json({
+        error: {
+          message: "Task not found",
+          code: "TASK_NOT_FOUND",
+          status: 404,
+        },
+      });
+    }
+
+    // Delete the task
+    await prisma.task.delete({
+      where: { id },
+    });
+
+    // Return 204 No Content for successful deletion
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    res.status(500).json({
+      error: {
+        message: "Failed to delete task",
+        code: "SERVER_ERROR",
+        status: 500,
+      },
+    });
+  }
+};
