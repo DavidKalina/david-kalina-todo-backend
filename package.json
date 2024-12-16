@@ -5,7 +5,9 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "migrate": "prisma migrate deploy",
+    "migrate:dev": "prisma migrate dev"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +17,8 @@
     "@prisma/client": "^6.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "wait-on": "^8.0.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
