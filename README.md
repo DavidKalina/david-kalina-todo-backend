@@ -205,7 +205,81 @@ docker images
 - `PUT /api/tasks/:id` - Update a task
 - `DELETE /api/tasks/:id` - Delete a task
 
-Full API documentation is available at [API Docs](./API.md) (TODO)
+## Testing the API with Thunder Client
+
+If you're using Visual Studio Code, you can use Thunder Client, a lightweight REST API client extension, to test the API endpoints. Here's how to get started:
+
+1. **Install Thunder Client**
+
+   - Open VS Code Extensions (Ctrl+Shift+X or Cmd+Shift+X)
+   - Search for "Thunder Client"
+   - Click Install on the extension by "Ranga Vadhineni"
+
+2. **Access Thunder Client**
+
+   - Click the Thunder Client icon in the VS Code activity bar (left sidebar)
+   - Or use the command palette (Ctrl+Shift+P or Cmd+Shift+P) and type "Thunder Client"
+
+3. **Available Endpoints**
+
+   ```
+   GET    http://localhost:3001/api/tasks      // List all tasks
+   POST   http://localhost:3001/api/tasks      // Create a new task
+   PUT    http://localhost:3001/api/tasks/:id  // Update a task
+   DELETE http://localhost:3001/api/tasks/:id  // Delete a task
+   ```
+
+4. **Example Requests**
+
+   **Create a Task:**
+
+   ```json
+   POST http://localhost:3001/api/tasks
+   Content-Type: application/json
+
+   {
+     "title": "Complete project documentation",
+     "color": "blue"
+   }
+   ```
+
+   **Update a Task:**
+
+   ```json
+   PUT http://localhost:3001/api/tasks/:id
+   Content-Type: application/json
+
+   {
+     "title": "Updated task title",
+     "color": "green",
+     "completed": true
+   }
+   ```
+
+5. **Testing Workflow**
+
+   - Create a new request in Thunder Client
+   - Select the HTTP method (GET, POST, PUT, DELETE)
+   - Enter the endpoint URL
+   - For POST/PUT requests, go to the "Body" tab and enter the JSON payload
+   - Click "Send" to execute the request
+
+6. **Response Handling**
+
+   - Successful requests will return appropriate status codes:
+     - GET: 200 OK
+     - POST: 201 Created
+     - PUT: 200 OK
+     - DELETE: 204 No Content
+   - Failed requests will return error status codes with explanatory messages
+
+7. **Collections**
+   - You can save your requests in Thunder Client collections
+   - Click "Collections" in Thunder Client
+   - Create a new collection named "Todo API"
+   - Save your frequently used requests for easy access
+
+This setup provides a convenient way to test your API endpoints directly from VS Code without needing to switch to external tools like Postman.
 
 ## 🏗️ Project Structure
 
