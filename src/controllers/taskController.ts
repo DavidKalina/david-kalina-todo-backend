@@ -1,12 +1,6 @@
-import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import {
-  CreateTaskDTO,
-  GetTaskDTO,
-  PaginationParams,
-  TaskFilters,
-  UpdateTaskDTO,
-} from "../types/task";
+import { Request, Response } from "express";
+import { CreateTaskDTO, PaginationParams, TaskFilters, UpdateTaskDTO } from "../types/task";
 
 const prisma = new PrismaClient();
 
@@ -62,32 +56,24 @@ export const listTasks = async (req: Request, res: Response) => {
     const { page = 1, limit = 10 } = req.query as unknown as PaginationParams;
     const skip = (Number(page) - 1) * Number(limit);
 
-    // Build filter conditions
     const filters: TaskFilters = {};
 
-    // Handle completion status filter
     if (req.query.completed !== undefined) {
       filters.completed = req.query.completed === "true";
     }
 
-    // Handle color filter
     if (req.query.color) {
       filters.color = req.query.color as string;
     }
 
-    // Handle search filter
     if (req.query.search) {
       filters.search = req.query.search as string;
     }
 
-    // Build the where clause for Prisma
     const where = {
       AND: [
-        // Add completion filter if present
         filters.completed !== undefined ? { completed: filters.completed } : {},
-        // Add color filter if present
         filters.color ? { color: filters.color } : {},
-        // Add search filter if present
         filters.search
           ? {
               title: {
@@ -99,7 +85,6 @@ export const listTasks = async (req: Request, res: Response) => {
       ],
     };
 
-    // Get filtered tasks with pagination
     const tasks = await prisma.task.findMany({
       where,
       skip: Number(skip),
@@ -109,7 +94,6 @@ export const listTasks = async (req: Request, res: Response) => {
       },
     });
 
-    // Get total counts for filtered results
     const totalTasks = await prisma.task.count({ where });
     const completedTasks = await prisma.task.count({
       where: {
@@ -147,7 +131,6 @@ export const updateTask = async (req: Request, res: Response) => {
     const { id } = req.params;
     const updateData: UpdateTaskDTO = req.body;
 
-    // Check if task exists
     const existingTask = await prisma.task.findUnique({
       where: { id },
     });
@@ -162,7 +145,6 @@ export const updateTask = async (req: Request, res: Response) => {
       });
     }
 
-    // Update the task
     const updatedTask = await prisma.task.update({
       where: { id },
       data: updateData,
@@ -185,7 +167,6 @@ export const deleteTask = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    // Check if task exists
     const existingTask = await prisma.task.findUnique({
       where: { id },
     });
@@ -200,12 +181,10 @@ export const deleteTask = async (req: Request, res: Response) => {
       });
     }
 
-    // Delete the task
     await prisma.task.delete({
       where: { id },
     });
 
-    // Return 204 No Content for successful deletion
     res.status(204).send();
   } catch (error) {
     console.error("Error deleting task:", error);

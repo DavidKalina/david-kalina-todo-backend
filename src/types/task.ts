@@ -1,3 +1,5 @@
+// TODO organize types into separate folders
+
 export interface Task {
   id: string;
   title: string;
