@@ -244,9 +244,13 @@ This is just a full stack take-home test, but if it were to be expanded upon, he
    - Create task activity logging
 
 4. **Performance Improvements**
+
    - Add Redis caching layer
    - Optimize database queries
    - Implement connection pooling
+
+5. **Dockerization Improvements**
+   - Allow database port to be set for entry script etc.
 
 ### Development Guidelines
 
