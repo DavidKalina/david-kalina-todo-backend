@@ -73,6 +73,90 @@ The API will be available at `http://localhost:3001` with hot-reload enabled.
    npm run dev
    ```
 
+## 🧹 Docker Cleanup
+
+### Stopping Containers
+
+1. **Stop containers but preserve data:**
+
+   ```bash
+   # Stop containers while keeping volumes and images
+   docker compose -f docker-compose.dev.yml down
+
+   # Stop containers and remove volumes
+   docker compose -f docker-compose.dev.yml down -v
+   ```
+
+2. **Stop and remove everything:**
+   ```bash
+   # Stop containers, remove volumes, images, and orphaned containers
+   docker compose -f docker-compose.dev.yml down -v --rmi all --remove-orphans
+   ```
+
+### Cleaning Individual Components
+
+1. **Remove just the database volume:**
+
+   ```bash
+   docker volume rm todo-backend_todo_db_data
+   ```
+
+2. **Remove project-specific images:**
+
+   ```bash
+   # Remove the API image
+   docker rmi todo-backend-api
+
+   # Remove the MySQL image
+   docker rmi mysql:8
+   ```
+
+3. **Clean unused resources:**
+
+   ```bash
+   # Remove all stopped containers
+   docker container prune
+
+   # Remove unused volumes
+   docker volume prune
+
+   # Remove unused networks
+   docker network prune
+
+   # Remove unused images
+   docker image prune
+   ```
+
+### Complete System Cleanup
+
+⚠️ **Warning**: This will remove ALL Docker resources on your system, including those from other projects.
+
+```bash
+# Remove everything - containers, images, volumes, networks
+docker system prune -a --volumes
+```
+
+### Verification Commands
+
+Check if cleanup was successful:
+
+```bash
+# List running containers
+docker ps
+
+# List all containers (including stopped)
+docker ps -a
+
+# List volumes
+docker volume ls
+
+# List networks
+docker network ls
+
+# List images
+docker images
+```
+
 ## 🔧 Troubleshooting
 
 ### Common Issues
